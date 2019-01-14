@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id = "nioCoder"
+        class = "com.niocoder.service.v1.NioCoderService">
+    </bean>
+
+    <bean id ="invalidBean"
+        class="xxx.xxx">
+    </bean>
+</beans>
