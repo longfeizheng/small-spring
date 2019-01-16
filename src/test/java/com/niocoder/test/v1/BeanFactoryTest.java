@@ -11,8 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * BeanFactory 测试类
@@ -35,14 +34,18 @@ public class BeanFactoryTest {
     public void testGetBean() {
 
         reader.loadBeanDefinition(new ClassPathResource("bean-v1.xml"));
-
         BeanDefinition bd = factory.getBeanDefinition("nioCoder");
 
+        assertTrue(bd.isSingleton());
+        assertFalse(bd.isPrototype());
+        assertEquals(BeanDefinition.SCOPE_DEFAULT, bd.getScope());
         assertEquals("com.niocoder.service.v1.NioCoderService", bd.getBeanClassName());
 
         NioCoderService nioCoderService = (NioCoderService) factory.getBean("nioCoder");
-
         assertNotNull(nioCoderService);
+
+        NioCoderService nioCoderService1 = (NioCoderService) factory.getBean("nioCoder");
+        assertTrue(nioCoderService.equals(nioCoderService1));
     }
 
     /**
