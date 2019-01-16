@@ -3,10 +3,11 @@ package com.niocoder.test.v1;
 import com.niocoder.beans.BeanDefinition;
 import com.niocoder.beans.factory.BeanCreationException;
 import com.niocoder.beans.factory.BeanDefinitionStoreException;
-import com.niocoder.beans.factory.BeanFactory;
 import com.niocoder.beans.factory.support.DefaultBeanFactory;
+import com.niocoder.beans.factory.xml.XmlBeanDefinitionReader;
 import com.niocoder.service.v1.NioCoderService;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -17,12 +18,23 @@ import static org.junit.Assert.assertNotNull;
  */
 public class BeanFactoryTest {
 
+    DefaultBeanFactory factory = null;
+    XmlBeanDefinitionReader reader = null;
+
+    @Before
+    public void setUp() {
+        factory = new DefaultBeanFactory();
+        reader = new XmlBeanDefinitionReader(factory);
+    }
+
     /**
      * 测试获取bean
      */
     @Test
     public void testGetBean() {
-        BeanFactory factory = new DefaultBeanFactory("bean-v1.xml");
+
+        reader.loadBeanDefinition("bean-v1.xml");
+
         BeanDefinition bd = factory.getBeanDefinition("nioCoder");
 
         assertEquals("com.niocoder.service.v1.NioCoderService", bd.getBeanClassName());
@@ -37,7 +49,7 @@ public class BeanFactoryTest {
      */
     @Test
     public void testInvalidBean() {
-        BeanFactory factory = new DefaultBeanFactory("bean-v1.xml");
+        reader.loadBeanDefinition("bean-v1.xml");
         try {
             factory.getBean("invalidBean");
         } catch (BeanCreationException e) {
@@ -53,7 +65,7 @@ public class BeanFactoryTest {
     @Test
     public void testInvalidXML() {
         try {
-            new DefaultBeanFactory("xxx.xml");
+            reader.loadBeanDefinition("xxx.xml");
         } catch (BeanDefinitionStoreException e) {
             return;
         }
