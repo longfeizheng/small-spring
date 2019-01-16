@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author zhenglongfei
  */
-public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements BeanFactory, BeanDefinitionRegistry {
 
 
     /**
@@ -41,19 +41,32 @@ public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
 
     @Override
     public Object getBean(String beanId) {
-        BeanDefinition bd = this.getBeanDefinition(beanId);
-        if (bd == null) {
-            throw new BeanCreationException("BeanDefinition does not exist");
-        }
-        ClassLoader cl = ClassUtils.getDefaultClassLoader();
 
+        BeanDefinition bd = this.getBeanDefinition(beanId);
+        if(bd == null){
+            return null;
+        }
+
+        if(bd.isSingleton()){
+            Object bean = this.getSingleton(beanId);
+            if(bean == null){
+                bean = createBean(bd);
+                this.registerSingleton(beanId, bean);
+            }
+            return bean;
+        }
+        return createBean(bd);
+    }
+
+    private Object createBean(BeanDefinition bd) {
+        ClassLoader cl = ClassUtils.getDefaultClassLoader();
         String beanClassName = bd.getBeanClassName();
         try {
-            // 使用反射创建bean的实例，需要对象存在默认的无参构造方法
             Class<?> clz = cl.loadClass(beanClassName);
+            // 使用反射创建bean的实例，需要对象存在默认的无参构造方法
             return clz.newInstance();
         } catch (Exception e) {
-            throw new BeanCreationException("Bean Definition does not exist");
+            throw new BeanCreationException("create bean for "+ beanClassName +" failed",e);
         }
     }
 }
