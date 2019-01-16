@@ -20,53 +20,23 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author zhenglongfei
  */
-public class DefaultBeanFactory implements BeanFactory {
+public class DefaultBeanFactory implements BeanFactory, BeanDefinitionRegistry {
 
-    private static final String ID_ATTRIBUTE = "id";
 
-    private static final String CLASS_ATTRIBUTE = "class";
     /**
      * 存放BeanDefinition
      */
     private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>();
 
-    /**
-     * 根据文件名称加载,解析bean.xml
-     *
-     * @param configFile
-     */
-    public DefaultBeanFactory(String configFile) {
-        loadBeanDefinition(configFile);
-    }
-
-    /**
-     * 具体解析bean.xml的方法 使用dom4j
-     *
-     * @param configFile
-     */
-    private void loadBeanDefinition(String configFile) {
-        ClassLoader cl = ClassUtils.getDefaultClassLoader();
-        try (InputStream is = cl.getResourceAsStream(configFile)) {
-            SAXReader reader = new SAXReader();
-            Document doc = reader.read(is);
-
-            Element root = doc.getRootElement();
-            Iterator<Element> elementIterator = root.elementIterator();
-            while (elementIterator.hasNext()) {
-                Element ele = elementIterator.next();
-                String id = ele.attributeValue(ID_ATTRIBUTE);
-                String beanClassName = ele.attributeValue(CLASS_ATTRIBUTE);
-                BeanDefinition bd = new GenericBeanDefinition(id, beanClassName);
-                this.beanDefinitionMap.put(id, bd);
-            }
-        } catch (Exception e) {
-            throw new BeanDefinitionStoreException("IOException parsing XML document", e);
-        }
-    }
 
     @Override
     public BeanDefinition getBeanDefinition(String beanId) {
         return this.beanDefinitionMap.get(beanId);
+    }
+
+    @Override
+    public void registerBeanDefinition(String beanId, BeanDefinition bd) {
+        this.beanDefinitionMap.put(beanId, bd);
     }
 
     @Override
