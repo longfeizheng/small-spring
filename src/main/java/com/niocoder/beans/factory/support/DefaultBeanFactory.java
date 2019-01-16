@@ -2,15 +2,9 @@ package com.niocoder.beans.factory.support;
 
 import com.niocoder.beans.BeanDefinition;
 import com.niocoder.beans.factory.BeanCreationException;
-import com.niocoder.beans.factory.BeanDefinitionStoreException;
 import com.niocoder.beans.factory.BeanFactory;
 import com.niocoder.util.ClassUtils;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
-import java.io.InputStream;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
