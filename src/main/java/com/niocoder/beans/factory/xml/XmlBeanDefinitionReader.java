@@ -23,8 +23,8 @@ public class XmlBeanDefinitionReader {
 
     BeanFactory beanFactory;
 
-    public XmlBeanDefinitionReader(BeanFactory defaultBeanFactory) {
-        this.beanFactory = defaultBeanFactory;
+    public XmlBeanDefinitionReader(BeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
     }
 
     /**
