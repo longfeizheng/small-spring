@@ -50,4 +50,12 @@ public class PropertyValue {
     public synchronized void setConvertedValue(Object convertedValue) {
         this.convertedValue = convertedValue;
     }
+
+    public Boolean getConverted() {
+        return converted;
+    }
+
+    public void setConverted(Boolean converted) {
+        this.converted = converted;
+    }
 }

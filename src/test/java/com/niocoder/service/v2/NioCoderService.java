@@ -22,4 +22,16 @@ public class NioCoderService {
     public void setUrl(String url) {
         this.url = url;
     }
+
+    public AccountDao getAccountDao() {
+        return accountDao;
+    }
+
+    public ItemDao getItemDao() {
+        return itemDao;
+    }
+
+    public String getUrl() {
+        return url;
+    }
 }
