@@ -1,5 +1,7 @@
 package com.niocoder.beans;
 
+import java.util.List;
+
 /**
  * bean.xml bean的定义
  *
@@ -54,4 +56,10 @@ public interface BeanDefinition {
      * @return
      */
     String getBeanClassName();
+
+    /**
+     * 获取bean.xmo 中的 property 标签内容 <property name ="accountDao" ref="accountDao"></property>
+     * @return
+     */
+    List<PropertyValue> getPropertyValues();
 }
