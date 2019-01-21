@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans>
-    <bean id = "nioCoder"
-        class = "com.niocoder.service.v2.NioCoderService">
-        <property name ="accountDao" ref="accountDao"></property>
-        <property name ="itemDao" ref="itemDao"></property>
-        <property name ="url" value="http://niocoder.com/"></property>
+    <bean id="nioCoder"
+          class="com.niocoder.service.v2.NioCoderService">
+        <property name="accountDao" ref="accountDao"></property>
+        <property name="itemDao" ref="itemDao"></property>
+        <property name="url" value="http://niocoder.com/"></property>
+        <property name="birthday" value="2019-01-21"></property>
+        <property name="flag" value="true"></property>
     </bean>
 
     <bean id="accountDao"
@@ -15,7 +17,7 @@
           class="com.niocoder.dao.v2.ItemDao">
     </bean>
 
-    <bean id ="invalidBean"
-        class="xxx.xxx">
+    <bean id="invalidBean"
+          class="xxx.xxx">
     </bean>
 </beans>

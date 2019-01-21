@@ -3,6 +3,8 @@ package com.niocoder.service.v2;
 import com.niocoder.dao.v2.AccountDao;
 import com.niocoder.dao.v2.ItemDao;
 
+import java.util.Date;
+
 public class NioCoderService {
 
     private AccountDao accountDao;
@@ -10,6 +12,10 @@ public class NioCoderService {
     private ItemDao itemDao;
 
     private String url;
+
+    private Date birthday; // date类型 需要特殊处理
+
+    private Boolean flag; // boolean 类型，特殊处理
 
     public void setAccountDao(AccountDao accountDao) {
         this.accountDao = accountDao;
@@ -33,5 +39,21 @@ public class NioCoderService {
 
     public String getUrl() {
         return url;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public Boolean getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Boolean flag) {
+        this.flag = flag;
     }
 }
