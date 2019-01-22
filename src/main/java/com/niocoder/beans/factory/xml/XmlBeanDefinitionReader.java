@@ -9,7 +9,6 @@ import com.niocoder.beans.factory.support.BeanDefinitionRegistry;
 import com.niocoder.beans.factory.support.GenericBeanDefinition;
 import com.niocoder.core.io.Resource;
 import com.niocoder.util.StringUtils;
-import javafx.beans.binding.ObjectExpression;
 import lombok.extern.java.Log;
 import org.dom4j.Document;
 import org.dom4j.Element;
