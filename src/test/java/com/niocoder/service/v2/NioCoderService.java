@@ -17,6 +17,16 @@ public class NioCoderService {
 
     private Boolean flag; // boolean 类型，特殊处理
 
+    private Integer version; // Integer 类型 特殊处理
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
     public void setAccountDao(AccountDao accountDao) {
         this.accountDao = accountDao;
     }
