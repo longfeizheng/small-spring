@@ -7,6 +7,7 @@
         <property name="url" value="http://niocoder.com/"></property>
         <property name="birthday" value="2019-01-21"></property>
         <property name="flag" value="true"></property>
+        <property name="version" value="1"></property>
     </bean>
 
     <bean id="accountDao"

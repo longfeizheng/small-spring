@@ -2,19 +2,14 @@ package com.niocoder.beans.factory.support;
 
 import com.niocoder.beans.BeanDefinition;
 import com.niocoder.beans.PropertyValue;
+import com.niocoder.beans.SimpleTypeConverter;
 import com.niocoder.beans.factory.BeanCreationException;
-import com.niocoder.beans.factory.BeanDefinitionStoreException;
 import com.niocoder.beans.factory.BeanFactory;
 import com.niocoder.util.ClassUtils;
-import org.dom4j.Document;
-import org.dom4j.Element;
-import org.dom4j.io.SAXReader;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.InputStream;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -80,20 +75,30 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
             return;
         }
 
+        // 处理 bean.xml 中的 ref 和 value 对应  RuntimeBeanReference TypedStringValue
+        //        <property name="itemDao" ref="itemDao"></property>
+        //        <property name="url" value="http://niocoder.com/"></property>
         BeanDefinitionValueResolver valueResolver = new BeanDefinitionValueResolver(this);
-
+        // 处理bean.xml中的特殊类型 Integer Boolean Date 等
+        //        <property name="birthday" value="2019-01-21"></property>
+        //        <property name="flag" value="true"></property>
+        //        <property name="version" value="1"></property>
+        SimpleTypeConverter converter = new SimpleTypeConverter();
         try {
             for (PropertyValue pv : pvs) {
                 String propertyName = pv.getName();
                 Object originalValue = pv.getValue();
                 Object resolvedValue = valueResolver.resolveValueIfNecessary(originalValue);
                 pv.setConvertedValue(resolvedValue);
+                pv.setConverted(true);
                 // set 注入 使用java BeanInfo 实现
                 BeanInfo beanInfo = Introspector.getBeanInfo(bean.getClass());
                 PropertyDescriptor[] pds = beanInfo.getPropertyDescriptors();
                 for (PropertyDescriptor pd : pds) {
                     if (pd.getName().equals(propertyName)) {
-                        pd.getWriteMethod().invoke(bean, resolvedValue);
+                        // 类型转换
+                        Object convertedValue = converter.convertIfNecessary(resolvedValue, pd.getPropertyType());
+                        pd.getWriteMethod().invoke(bean, convertedValue);
                         break;
                     }
                 }

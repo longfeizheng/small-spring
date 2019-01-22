@@ -6,6 +6,12 @@ import com.niocoder.util.StringUtils;
 import java.beans.PropertyEditorSupport;
 import java.text.NumberFormat;
 
+/**
+ * 将字符串转换成Number类型
+ * <property name="birthday" value="2019-01-21"></property>
+ *
+ * @author zhenglongfei
+ */
 public class CustomNumberEditor extends PropertyEditorSupport {
 
     private final Class<? extends Number> numberClass;
