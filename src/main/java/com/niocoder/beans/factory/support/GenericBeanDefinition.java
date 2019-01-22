@@ -2,6 +2,7 @@ package com.niocoder.beans.factory.support;
 
 
 import com.niocoder.beans.BeanDefinition;
+import com.niocoder.beans.ConstructorArgument;
 import com.niocoder.beans.PropertyValue;
 
 import java.util.ArrayList;
@@ -19,12 +20,20 @@ public class GenericBeanDefinition implements BeanDefinition {
     private boolean singleton = true;
     private boolean prototype = false;
     private String scope = SCOPE_DEFAULT;
+    private Class beanClass;
 
     List<PropertyValue> propertyValues = new ArrayList<>();
+    private ConstructorArgument constructorArgument = new ConstructorArgument();
 
     public GenericBeanDefinition(String id, String beanClassName) {
         this.id = id;
         this.beanClassName = beanClassName;
+    }
+
+    public GenericBeanDefinition(String id, String beanClassName, Class beanClass) {
+        this.id = id;
+        this.beanClassName = beanClassName;
+        this.beanClass = beanClass;
     }
 
     @Override
@@ -57,5 +66,30 @@ public class GenericBeanDefinition implements BeanDefinition {
     @Override
     public List<PropertyValue> getPropertyValues() {
         return this.propertyValues;
+    }
+
+    @Override
+    public ConstructorArgument getConstructorArgument() {
+        return this.constructorArgument;
+    }
+
+    @Override
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public boolean hasConstructorArgumentValues() {
+        return !this.constructorArgument.isEmpty();
+    }
+
+    @Override
+    public Class getBeanClass() {
+        return this.beanClass;
+    }
+
+    @Override
+    public void setBeanClass(Class beanClass) {
+        this.beanClass = beanClass;
     }
 }

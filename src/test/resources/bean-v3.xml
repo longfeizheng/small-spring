@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="nioCoder"
+          class="com.niocoder.service.v3.NioCoderService">
+        <constructor-arg ref="accountDao"/>
+        <constructor-arg ref="itemDao"/>
+        <constructor-arg value="1"/>
+    </bean>
+
+    <bean id="accountDao"
+          class="com.niocoder.dao.v3.AccountDao">
+    </bean>
+
+    <bean id="itemDao"
+          class="com.niocoder.dao.v3.ItemDao">
+    </bean>
+</beans>
