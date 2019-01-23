@@ -9,7 +9,6 @@ import com.niocoder.beans.factory.support.BeanDefinitionRegistry;
 import com.niocoder.beans.factory.support.GenericBeanDefinition;
 import com.niocoder.core.io.Resource;
 import com.niocoder.util.StringUtils;
-import javafx.beans.binding.ObjectExpression;
 import lombok.extern.java.Log;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -69,6 +68,7 @@ public class XmlBeanDefinitionReader {
                 if (ele.attribute(SCOPE_ATTRIBUTE) != null) {
                     bd.setScope(ele.attributeValue(SCOPE_ATTRIBUTE));
                 }
+                // 解析property标签
                 parsePropertyElement(ele, bd);
                 this.registry.registerBeanDefinition(id, bd);
             }
@@ -107,9 +107,11 @@ public class XmlBeanDefinitionReader {
             if (!StringUtils.hasText(refName)) {
                 log.info(elementName + " contains empty 'ref' attribute");
             }
+            // 表示是ref =""
             RuntimeBeanReference ref = new RuntimeBeanReference(refName);
             return ref;
         } else if (hasValueAttribute) {
+            // 表示名value=""
             TypedStringValue valueHolder = new TypedStringValue(propElem.attributeValue(VALUE_ATTRIBUTE));
             return valueHolder;
         } else {
