@@ -25,6 +25,9 @@ public class GenericBeanDefinition implements BeanDefinition {
     List<PropertyValue> propertyValues = new ArrayList<>();
     private ConstructorArgument constructorArgument = new ConstructorArgument();
 
+    public GenericBeanDefinition() {
+    }
+
     public GenericBeanDefinition(String id, String beanClassName) {
         this.id = id;
         this.beanClassName = beanClassName;
@@ -91,5 +94,13 @@ public class GenericBeanDefinition implements BeanDefinition {
     @Override
     public void setBeanClass(Class beanClass) {
         this.beanClass = beanClass;
+    }
+
+    public void setBeanClassName(String className) {
+        this.beanClassName = className;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
