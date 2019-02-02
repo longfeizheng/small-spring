@@ -20,7 +20,7 @@ public class GenericBeanDefinition implements BeanDefinition {
     private boolean singleton = true;
     private boolean prototype = false;
     private String scope = SCOPE_DEFAULT;
-    private Class beanClass;
+    private Class<?> beanClass;
 
     List<PropertyValue> propertyValues = new ArrayList<>();
     private ConstructorArgument constructorArgument = new ConstructorArgument();
@@ -87,13 +87,32 @@ public class GenericBeanDefinition implements BeanDefinition {
     }
 
     @Override
-    public Class getBeanClass() {
+    public Class<?> getBeanClass() {
+        if (this.beanClass == null) {
+            throw new IllegalStateException("Bean class name [" + this.getBeanClassName() + "] has not been resolve into an actual Class");
+        }
         return this.beanClass;
     }
 
     @Override
     public void setBeanClass(Class beanClass) {
         this.beanClass = beanClass;
+    }
+
+    @Override
+    public boolean hasBeanClass() {
+        return this.beanClass != null;
+    }
+
+    @Override
+    public Class<?> resolveBeanClass(ClassLoader beanClassLoader) throws ClassNotFoundException {
+        String className = getBeanClassName();
+        if (className == null) {
+            return null;
+        }
+        Class<?> resolvedClass = beanClassLoader.loadClass(className);
+        this.beanClass = resolvedClass;
+        return resolvedClass;
     }
 
     public void setBeanClassName(String className) {

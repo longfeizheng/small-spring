@@ -96,4 +96,21 @@ public interface BeanDefinition {
      * 设置beanClass
      */
     void setBeanClass(Class beanClass);
+
+    /**
+     * 判断是否有beanClass
+     *
+     * @return
+     */
+    boolean hasBeanClass();
+
+    /**
+     * 缓存beanClass
+     *
+     * @param beanClassLoader
+     * @return
+     * @throws ClassNotFoundException
+     */
+    Class<?> resolveBeanClass(ClassLoader beanClassLoader) throws ClassNotFoundException;
+
 }
