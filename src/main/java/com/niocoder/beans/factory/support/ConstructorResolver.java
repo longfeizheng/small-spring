@@ -31,7 +31,7 @@ public class ConstructorResolver {
         Constructor<?> constructorToUse = null;
         Object[] argsToUse = null;
 
-        Class beanClass = bd.getBeanClass();
+        Class beanClass = null;
 
         if (null == beanClass) {
             try {
