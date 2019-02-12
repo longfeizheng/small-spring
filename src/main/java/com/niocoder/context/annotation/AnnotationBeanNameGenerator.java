@@ -44,6 +44,11 @@ public class AnnotationBeanNameGenerator implements BeanNameGenerator {
         return Introspector.decapitalize(shortClassName);
     }
 
+    /**
+     * 获取value值
+     * @param definition
+     * @return
+     */
     private String determineBeanNameFromAnnotation(AnnotatedBeanDefinition definition) {
         AnnotationMetadata amd = definition.getMetadata();
         Set<String> types = amd.getAnnotationTypes();
