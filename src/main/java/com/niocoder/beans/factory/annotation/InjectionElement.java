@@ -4,6 +4,9 @@ import com.niocoder.beans.factory.config.AutowireCapableBeanFactory;
 
 import java.lang.reflect.Member;
 
+/**
+ * @author zhenglongfei
+ */
 public abstract class InjectionElement {
 
     protected Member member;
@@ -14,5 +17,10 @@ public abstract class InjectionElement {
         this.factory = factory;
     }
 
+    /**
+     * 属性注入的抽象方法
+     *
+     * @param target
+     */
     public abstract void inject(Object target);
 }
