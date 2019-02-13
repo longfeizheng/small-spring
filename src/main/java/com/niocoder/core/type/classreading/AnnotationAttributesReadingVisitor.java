@@ -13,8 +13,14 @@ import java.util.Map;
  */
 public class AnnotationAttributesReadingVisitor extends AnnotationVisitor {
 
+    /**
+     * com.niocoder.stereotype.Component
+     */
     private final String annotationType;
 
+    /**
+     * key=com.niocoder.stereotype.Component  value={AnnotationAttributes={key:value,value:nioCoder}}
+     */
     private final Map<String, AnnotationAttributes> attributesMap;
 
     AnnotationAttributes attributes = new AnnotationAttributes();

@@ -6,11 +6,14 @@ import com.niocoder.beans.SimpleTypeConverter;
 import com.niocoder.beans.factory.BeanCreationException;
 import com.niocoder.beans.factory.config.AutowireCapableBeanFactory;
 import com.niocoder.beans.factory.config.DependencyDescriptor;
+import com.niocoder.beans.factory.BeanFactory;
+import com.niocoder.beans.factory.config.*;
 import com.niocoder.util.ClassUtils;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,9 +24,12 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author zhenglongfei
  */
-public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements AutowireCapableBeanFactory, BeanDefinitionRegistry {
+public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory, BeanDefinitionRegistry {
 
-
+    /**
+     * 存放BeanPostProcessor
+     */
+    private List<BeanPostProcessor> beanPostProcessors = new ArrayList<>();
     /**
      * 存放BeanDefinition
      */
@@ -70,6 +76,13 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
     }
 
     private void populateBean(BeanDefinition bd, Object bean) {
+
+        for (BeanPostProcessor postProcessor : this.getBeanPostProcessors()) {
+            if (postProcessor instanceof InstantiationAwareBeanPostProcessor) {
+                ((InstantiationAwareBeanPostProcessor) postProcessor).postProcessPropertyValues(bean, bd.getId());
+            }
+        }
+
         List<PropertyValue> pvs = bd.getPropertyValues();
 
         if (pvs == null || pvs.isEmpty()) {
@@ -151,5 +164,15 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
                 throw new RuntimeException("can't load class" + bd.getBeanClassName());
             }
         }
+    }
+
+    @Override
+    public void addBeanPostProcessor(BeanPostProcessor postProcessor) {
+        this.beanPostProcessors.add(postProcessor);
+    }
+
+    @Override
+    public List<BeanPostProcessor> getBeanPostProcessors() {
+        return this.beanPostProcessors;
     }
 }

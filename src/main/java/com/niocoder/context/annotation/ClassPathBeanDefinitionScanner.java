@@ -23,16 +23,32 @@ import java.util.Set;
  */
 @Log
 public class ClassPathBeanDefinitionScanner {
+
+    /**
+     * 注册到BeanFactory中，所以需要BeanDefinitionRegistry
+     */
     private final BeanDefinitionRegistry registry;
 
+    /**
+     * 扫描包下的文件返回Resource
+     */
     private PackageResourceLoader resourceLoader = new PackageResourceLoader();
 
+    /**
+     * 生成Bean的名称beanName
+     */
     private BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
 
     public ClassPathBeanDefinitionScanner(BeanDefinitionRegistry registry) {
         this.registry = registry;
     }
 
+    /**
+     * 核心方法，给定包名，包下面所有被@Component会被创建BeanDefinition并返回
+     *
+     * @param packagesToScan
+     * @return
+     */
     public Set<BeanDefinition> doScan(String packagesToScan) {
 
         String[] basePackages = StringUtils.tokenizeToStringArray(packagesToScan, ",");
@@ -50,6 +66,12 @@ public class ClassPathBeanDefinitionScanner {
     }
 
 
+    /**
+     * 查找被Component标记的类并返回
+     *
+     * @param basePackage
+     * @return
+     */
     public Set<BeanDefinition> findCandidateComponents(String basePackage) {
         Set<BeanDefinition> candidates = new LinkedHashSet<BeanDefinition>();
         try {
