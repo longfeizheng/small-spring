@@ -8,6 +8,9 @@ import com.niocoder.util.*;
 import java.lang.reflect.Field;
 
 
+/**
+ * @author zhenglongfei
+ */
 public class AutowiredFieldElement extends InjectionElement {
 
     boolean required;
