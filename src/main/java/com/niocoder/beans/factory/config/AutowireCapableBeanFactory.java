@@ -4,6 +4,7 @@ import com.niocoder.beans.factory.BeanFactory;
 
 /**
  * 表明注解 注入的beanFactory
+ * @author zhenglongfei
  */
 public interface AutowireCapableBeanFactory extends BeanFactory {
 
