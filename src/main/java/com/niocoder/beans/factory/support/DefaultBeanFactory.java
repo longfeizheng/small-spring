@@ -4,7 +4,6 @@ import com.niocoder.beans.BeanDefinition;
 import com.niocoder.beans.PropertyValue;
 import com.niocoder.beans.SimpleTypeConverter;
 import com.niocoder.beans.factory.BeanCreationException;
-import com.niocoder.beans.factory.BeanFactory;
 import com.niocoder.beans.factory.config.AutowireCapableBeanFactory;
 import com.niocoder.beans.factory.config.DependencyDescriptor;
 import com.niocoder.util.ClassUtils;

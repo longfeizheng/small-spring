@@ -3,11 +3,20 @@ package com.niocoder.beans.factory.config;
 import java.lang.reflect.Field;
 
 /**
- * 表明注解注入中的字段注入
+ * 表明属性注入或者方法注入
+ *
+ * @author zhenglongfei
  */
 public class DependencyDescriptor {
-
+    /**
+     * 属性注入
+     */
     private Field field;
+    /**
+     * 方法注入
+     */
+//    private MethodParameter methodParameter;
+
     private boolean required;
 
     public DependencyDescriptor(Field field, boolean required) {
@@ -17,9 +26,10 @@ public class DependencyDescriptor {
 
     public Class<?> getDependencyType() {
         if (this.field != null) {
-            return field.getType();// 字段的类型如 AccountDao ItemDao
+            // 字段的类型如 AccountDao ItemDao
+            return field.getType();
         }
-        // TODO 构造器注入
+        // TODO 方法注入不支持
         throw new RuntimeException("only support field dependency");
     }
 
