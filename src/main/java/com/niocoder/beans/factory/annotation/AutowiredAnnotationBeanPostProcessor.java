@@ -29,12 +29,23 @@ public class AutowiredAnnotationBeanPostProcessor implements InstantiationAwareB
     private String requiredParameterName = "required";
     private boolean requiredParameterValue = true;
 
+    /**
+     * 存储需要判断的注解信息
+     */
     private final Set<Class<? extends Annotation>> autowiredAnnotationTypes = new LinkedHashSet<>();
 
+    /**
+     * 添加Autowired注解
+     */
     public AutowiredAnnotationBeanPostProcessor() {
         this.autowiredAnnotationTypes.add(Autowired.class);
     }
 
+    /**
+     * 给定class对象构建InjectionMetadata
+     * @param clazz
+     * @return
+     */
     public InjectionMetadata buildAutowiringMetadata(Class<?> clazz) {
         List<InjectionElement> elements = new LinkedList<>();
         Class<?> targetClass = clazz;
