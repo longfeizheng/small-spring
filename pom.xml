@@ -46,5 +46,10 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/spring-core-asm-3.2.18.RELEASE.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.8.13</version>
+        </dependency>
     </dependencies>
 </project>

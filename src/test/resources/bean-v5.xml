@@ -9,12 +9,17 @@
 
     </context:component-scan>
 
+    <!-- 模拟 TransactionManager-->
     <bean id="tx" class="com.niocoder.tx.TransactionManager"/>
 
+    <!-- aop 配置-->
     <aop:config>
+        <!-- aop 核心配置 依赖tx-->
         <aop:aspect ref="tx">
+            <!-- 切入点配置 包下面的placeOrder 方法-->
             <aop:pointcut id="placeOrder"
                           expression="execution(* com.niocoder.service.v5.*.placeOrder(..))"/>
+            <!-- 通知配置，-->
             <aop:before pointcut-ref="placeOrder" method="start"/>
             <aop:after-returning pointcut-ref="placeOrder" method="commit"/>
             <aop:after-throwing pointcut-ref="placeOrder" method="rollback"/>
