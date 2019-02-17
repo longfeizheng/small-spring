@@ -14,3 +14,5 @@
 6. [Small Spring系列六：annotation Injection(二)](http://niocoder.com/2019/02/12/Small-Spring%E7%B3%BB%E5%88%97%E5%85%AD-annotation-Injection(%E4%BA%8C)/)
 
 7. [Small Spring系列七：annotation Injection(三)](http://niocoder.com/2019/02/13/Small-Spring%E7%B3%BB%E5%88%97%E4%B8%83-annotation-Injection(%E4%B8%89)/)
+
+8. [Small Spring系列八：aop (一)](http://niocoder.com/2019/02/16/Small-Spring%E7%B3%BB%E5%88%97%E5%85%AB-aop(%E4%B8%80)/)
