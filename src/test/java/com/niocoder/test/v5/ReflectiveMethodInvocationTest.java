@@ -1,6 +1,7 @@
 package com.niocoder.test.v5;
 
 import com.niocoder.aop.aspectj.AspectJAfterReturningAdvice;
+import com.niocoder.aop.aspectj.AspectJAfterThrowingAdvice;
 import com.niocoder.aop.aspectj.AspectJBeforeAdvice;
 import com.niocoder.aop.framework.ReflectiveMethodInvocation;
 import com.niocoder.service.v5.NioCoderService;
@@ -26,6 +27,7 @@ public class ReflectiveMethodInvocationTest {
 
     private AspectJBeforeAdvice beforeAdvice = null;
     private AspectJAfterReturningAdvice afterReturningAdvice;
+    private AspectJAfterThrowingAdvice afterThrowingAdvice;
     private NioCoderService nioCoderService;
     private TransactionManager tx;
 
@@ -37,6 +39,7 @@ public class ReflectiveMethodInvocationTest {
         MessageTracker.clearMsgs();
         beforeAdvice = new AspectJBeforeAdvice(TransactionManager.class.getMethod("start"), null, tx);
         afterReturningAdvice = new AspectJAfterReturningAdvice(TransactionManager.class.getMethod("commit"), null, tx);
+        afterThrowingAdvice = new AspectJAfterThrowingAdvice(TransactionManager.class.getMethod("rollback"), null, tx);
     }
 
 
@@ -57,5 +60,29 @@ public class ReflectiveMethodInvocationTest {
         Assert.assertEquals("start tx", msgs.get(0));
         Assert.assertEquals("place order", msgs.get(1));
         Assert.assertEquals("commit tx", msgs.get(2));
+    }
+
+    @Test
+    public void testAfterThrowing() throws Throwable{
+
+        Method targetMethod = NioCoderService.class.getMethod("placeOrderWithException");
+        List<MethodInterceptor> interceptorList = new ArrayList<>();
+        interceptorList.add(beforeAdvice);
+        interceptorList.add(afterThrowingAdvice);
+
+        ReflectiveMethodInvocation mi = new ReflectiveMethodInvocation(nioCoderService, targetMethod, new Object[0], interceptorList);
+
+        try {
+            mi.proceed();
+        } catch (Throwable t) {
+            List<String> msgs = MessageTracker.getMsgs();
+
+            Assert.assertEquals(2, msgs.size());
+            Assert.assertEquals("start tx", msgs.get(0));
+            Assert.assertEquals("rollback tx", msgs.get(1));
+            return;
+        }
+
+        Assert.fail("No Exception thrown");
     }
 }
