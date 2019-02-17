@@ -56,5 +56,12 @@
             <artifactId>aopalliance</artifactId>
             <version>1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core-cglib</artifactId>
+            <version>3.2.18.RELEASE</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/spring-core-cglib-3.2.18.RELEASE.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>
