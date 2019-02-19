@@ -3,7 +3,10 @@ package com.niocoder.test.v5;
 import com.niocoder.aop.aspectj.AspectJAfterReturningAdvice;
 import com.niocoder.aop.aspectj.AspectJAfterThrowingAdvice;
 import com.niocoder.aop.aspectj.AspectJBeforeAdvice;
+import com.niocoder.aop.aspectj.AspectJExpressionPointcut;
+import com.niocoder.aop.config.AspectInstanceFactory;
 import com.niocoder.aop.framework.ReflectiveMethodInvocation;
+import com.niocoder.beans.factory.BeanFactory;
 import com.niocoder.service.v5.NioCoderService;
 import com.niocoder.tx.TransactionManager;
 import com.niocoder.util.MessageTracker;
@@ -23,23 +26,32 @@ import java.util.List;
  * @email i@merryyou.cn
  * @since 1.0
  */
-public class ReflectiveMethodInvocationTest {
+public class ReflectiveMethodInvocationTest extends AbstractV5Test{
 
     private AspectJBeforeAdvice beforeAdvice = null;
     private AspectJAfterReturningAdvice afterReturningAdvice;
     private AspectJAfterThrowingAdvice afterThrowingAdvice;
     private NioCoderService nioCoderService;
-    private TransactionManager tx;
+    private AspectJExpressionPointcut pc = null;
+    private BeanFactory beanFactory = null;
+    private AspectInstanceFactory aspectInstanceFactory = null;
 
 
     @Before
     public void setUp() throws Exception {
         nioCoderService = new NioCoderService();
-        tx = new TransactionManager();
+        String expression = "execution(* com.niocoder.service.v5.*.placeOrder(..))";
+        pc = new AspectJExpressionPointcut();
+        pc.setExpression(expression);
+
+        beanFactory = this.getBeanFactory("bean-v5.xml");
+        aspectInstanceFactory = this.getAspectInstanceFactory("tx");
+        aspectInstanceFactory.setBeanFactory(beanFactory);
+
         MessageTracker.clearMsgs();
-        beforeAdvice = new AspectJBeforeAdvice(TransactionManager.class.getMethod("start"), null, tx);
-        afterReturningAdvice = new AspectJAfterReturningAdvice(TransactionManager.class.getMethod("commit"), null, tx);
-        afterThrowingAdvice = new AspectJAfterThrowingAdvice(TransactionManager.class.getMethod("rollback"), null, tx);
+        beforeAdvice = new AspectJBeforeAdvice(TransactionManager.class.getMethod("start"), pc, aspectInstanceFactory);
+        afterReturningAdvice = new AspectJAfterReturningAdvice(TransactionManager.class.getMethod("commit"), pc, aspectInstanceFactory);
+        afterThrowingAdvice = new AspectJAfterThrowingAdvice(TransactionManager.class.getMethod("rollback"), pc, aspectInstanceFactory);
     }
 
 
