@@ -49,7 +49,7 @@ public class CglibAopProxyTest {
 
         config.addAdvice(beforeAdvice);
         config.addAdvice(afterAdvice);
-        config.setTargetObject(new NioCoderService());
+        config.setTargetObject(nioCoderService);
 
         CglibProxyFactory proxyFactory = new CglibProxyFactory(config);
 
