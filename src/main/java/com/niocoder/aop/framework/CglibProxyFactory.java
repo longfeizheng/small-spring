@@ -138,6 +138,7 @@ public class CglibProxyFactory implements AopProxyFactory {
             this.config = advised;
         }
 
+        @Override
         public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
 
 
@@ -169,11 +170,13 @@ public class CglibProxyFactory implements AopProxyFactory {
      */
     private static class ProxyCallbackFilter implements CallbackFilter {
         private final AopConfig config;
+
         public ProxyCallbackFilter(AopConfig advised) {
             this.config = advised;
 
         }
 
+        @Override
         public int accept(Method method) {
             // 注意，这里做了简化
             return AOP_PROXY;

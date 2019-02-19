@@ -24,6 +24,7 @@ public class AspectJAfterReturningAdvice extends AbstractAspectJAdvice {
      * @return
      * @throws Throwable
      */
+    @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Object o = invocation.proceed();
         this.invokeAdviceMethod();
