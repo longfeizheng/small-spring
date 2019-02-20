@@ -21,9 +21,9 @@ import java.util.List;
 @Log
 public class ConstructorResolver {
 
-    private final DefaultBeanFactory factory;
+    private final AbstractBeanFactory factory;
 
-    public ConstructorResolver(DefaultBeanFactory factory) {
+    public ConstructorResolver(AbstractBeanFactory factory) {
         this.factory = factory;
     }
 

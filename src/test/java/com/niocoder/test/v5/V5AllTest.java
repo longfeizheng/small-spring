@@ -15,7 +15,10 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
         PointcutTest.class,
         MethodLocatingFactoryTest.class,
-        ReflectiveMethodInvocationTest.class
+        ReflectiveMethodInvocationTest.class,
+        CglibAopProxyTest.class,
+        BeanDefinitionTest.class,
+        ApplicationContextTest.class
 })
 public class V5AllTest {
 }

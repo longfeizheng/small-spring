@@ -1,5 +1,6 @@
 package com.niocoder.beans.factory.xml;
 
+import com.niocoder.aop.config.ConfigBeanDefinitionParser;
 import com.niocoder.beans.BeanDefinition;
 import com.niocoder.beans.ConstructorArgument;
 import com.niocoder.beans.PropertyValue;
@@ -54,6 +55,8 @@ public class XmlBeanDefinitionReader {
     public static final String CONTEXT_NAMESPACE_URI = "http://www.springframework.org/schema/context";
 
     private static final String BASE_PACKAGE_ATTRIBUTE = "base-package";
+
+    public static final String AOP_NAMESPACE_URI = "http://www.springframework.org/schema/aop";
     BeanDefinitionRegistry registry;
 
     public XmlBeanDefinitionReader(BeanDefinitionRegistry registry) {
@@ -81,11 +84,28 @@ public class XmlBeanDefinitionReader {
                 } else if (this.isContextNamespace(namespaceUri)) {
                     // 解析xml中定义的 扫描bean 例如<context:component-scan>
                     parseComponentElement(ele);
+                } else if (this.isAOPNamespace(namespaceUri)) {
+                    // 解析xml中定义的合成bean <aop:config> 标签
+                    parseAOPElement(ele);
                 }
             }
         } catch (Exception e) {
             throw new BeanDefinitionStoreException("IOException parsing XML document", e);
         }
+    }
+
+    /**
+     * 解析aop 合成bean
+     *
+     * @param ele
+     */
+    private void parseAOPElement(Element ele) {
+        ConfigBeanDefinitionParser parser = new ConfigBeanDefinitionParser();
+        parser.parse(ele, this.registry);
+    }
+
+    private boolean isAOPNamespace(String namespaceUri) {
+        return (!StringUtils.hasLength(namespaceUri) || AOP_NAMESPACE_URI.equals(namespaceUri));
     }
 
     private void parseComponentElement(Element ele) {
