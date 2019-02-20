@@ -113,4 +113,10 @@ public interface BeanDefinition {
      */
     Class<?> resolveBeanClass(ClassLoader beanClassLoader) throws ClassNotFoundException;
 
+    /**
+     * 是否是合成的 bean
+     *
+     * @return
+     */
+    boolean isSynthetic();
 }
