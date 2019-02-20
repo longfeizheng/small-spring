@@ -6,6 +6,7 @@ import com.niocoder.aop.Pointcut;
 import com.niocoder.aop.framework.AopConfigSupport;
 import com.niocoder.aop.framework.AopProxyFactory;
 import com.niocoder.aop.framework.CglibProxyFactory;
+import com.niocoder.aop.framework.JdkAopProxyFactory;
 import com.niocoder.beans.BeansException;
 import com.niocoder.beans.factory.config.BeanPostProcessor;
 import com.niocoder.beans.factory.config.ConfigurableBeanFactory;
@@ -63,8 +64,8 @@ public class AspectJAutoProxyCreator implements BeanPostProcessor {
         if (config.getProxiedInterfaces().length == 0) {
             proxyFactory = new CglibProxyFactory(config);
         } else {
-            //TODO 需要实现JDK 代理
-            //proxyFactory = new JdkAopProxyFactory(config);
+            // JDK 代理
+            proxyFactory = new JdkAopProxyFactory(config);
         }
 
         return proxyFactory.getProxy();
