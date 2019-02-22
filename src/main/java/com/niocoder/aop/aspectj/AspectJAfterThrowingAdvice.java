@@ -1,7 +1,5 @@
 package com.niocoder.aop.aspectj;
 
-import com.niocoder.aop.Advice;
-import com.niocoder.aop.Pointcut;
 import org.aopalliance.intercept.MethodInvocation;
 
 import java.lang.reflect.Method;
@@ -13,23 +11,10 @@ import java.lang.reflect.Method;
  * @email i@merryyou.cn
  * @since 1.0
  */
-public class AspectJAfterThrowingAdvice implements Advice {
-
-    // 通知的前置方法  即 TransactionManager.rollback()
-    private Method adviceMethod;
-    // 判该对象中的方法是否符合pointcut
-    private AspectJExpressionPointcut pointcut;
-    // 通知的对象 即 TransactionManager
-    private Object adviceObject;
+public class AspectJAfterThrowingAdvice extends AbstractAspectJAdvice {
 
     public AspectJAfterThrowingAdvice(Method adviceMethod, AspectJExpressionPointcut pointcut, Object adviceObject) {
-        this.adviceMethod = adviceMethod;
-        this.pointcut = pointcut;
-        this.adviceObject = adviceObject;
-    }
-
-    public Pointcut getPointcut() {
-        return pointcut;
+        super(adviceMethod, pointcut, adviceObject);
     }
 
     /**
@@ -39,6 +24,7 @@ public class AspectJAfterThrowingAdvice implements Advice {
      * @return
      * @throws Throwable
      */
+    @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         try {
             return invocation.proceed();
@@ -48,16 +34,4 @@ public class AspectJAfterThrowingAdvice implements Advice {
         }
     }
 
-    public Method getAdviceMethod() {
-        return adviceMethod;
-    }
-
-    /**
-     * 执行通知方法  TransactionManager.commit()
-     *
-     * @throws Throwable
-     */
-    public void invokeAdviceMethod() throws Throwable {
-        adviceMethod.invoke(adviceObject);
-    }
 }
