@@ -33,15 +33,17 @@ public class ReflectiveMethodInvocation implements MethodInvocation {
         this.interceptorList = interceptorList;
     }
 
-
+    @Override
     public Method getMethod() {
         return this.targetMethod;
     }
 
+    @Override
     public Object[] getArguments() {
         return (this.arguments != null ? this.arguments : new Object[0]);
     }
 
+    @Override
     public Object proceed() throws Throwable {
         //所有的拦截器已经调用完成
         if (this.currentInterceptorIndex == this.interceptorList.size() - 1) {
@@ -60,10 +62,12 @@ public class ReflectiveMethodInvocation implements MethodInvocation {
         return this.targetMethod.invoke(this.targetObject, this.arguments);
     }
 
+    @Override
     public Object getThis() {
         return this.targetObject;
     }
 
+    @Override
     public AccessibleObject getStaticPart() {
         return this.targetMethod;
     }
