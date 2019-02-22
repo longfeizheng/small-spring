@@ -138,6 +138,7 @@ public class CglibProxyFactory implements AopProxyFactory {
             this.config = advised;
         }
 
+        @Override
         public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
 
 
@@ -146,8 +147,7 @@ public class CglibProxyFactory implements AopProxyFactory {
 
             List<Advice> chain = this.config.getAdvices(method/*, targetClass*/);
             Object retVal;
-            // Check whether we only have one InvokerInterceptor: that is,
-            // no real advice, but just reflective invocation of the target.
+            // 如果没有配置 advice
             if (chain.isEmpty() && Modifier.isPublic(method.getModifiers())) {
                 retVal = methodProxy.invoke(target, args);
             } else {
@@ -155,7 +155,7 @@ public class CglibProxyFactory implements AopProxyFactory {
                         new ArrayList<org.aopalliance.intercept.MethodInterceptor>();
 
                 interceptors.addAll(chain);
-                // We need to create a method invocation...
+                // 配置advice
                 retVal = new ReflectiveMethodInvocation(target, method, args, interceptors).proceed();
             }
             //retVal = processReturnType(proxy, target, method, retVal);
@@ -169,15 +169,16 @@ public class CglibProxyFactory implements AopProxyFactory {
      */
     private static class ProxyCallbackFilter implements CallbackFilter {
         private final AopConfig config;
-        public ProxyCallbackFilter(AopConfig advised) {
-            this.config = advised;
+
+        public ProxyCallbackFilter(AopConfig config) {
+            this.config = config;
 
         }
 
+        @Override
         public int accept(Method method) {
             // 注意，这里做了简化
             return AOP_PROXY;
-
         }
 
     }

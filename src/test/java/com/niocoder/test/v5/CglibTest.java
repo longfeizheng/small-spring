@@ -28,7 +28,7 @@ public class CglibTest {
         enhancer.setCallback(new TransactionInterceptor());
         NioCoderService nioCoderService = (NioCoderService) enhancer.create();
         nioCoderService.placeOrder();
-        nioCoderService.toString();
+//        nioCoderService.toString();
     }
 
     /**
@@ -72,12 +72,8 @@ public class CglibTest {
     }
 
     private class ProxyCallbackFilter implements CallbackFilter {
-
-
         public ProxyCallbackFilter() {
-
         }
-
         @Override
         public int accept(Method method) {
             if (method.getName().startsWith("place")) {

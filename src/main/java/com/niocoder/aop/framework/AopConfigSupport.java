@@ -80,6 +80,10 @@ public class AopConfigSupport implements AopConfig {
         return result;
     }
 
+    public void setProxyTargetClass(boolean proxyTargetClass) {
+        this.proxyTargetClass = proxyTargetClass;
+    }
+
     @Override
     public void setTargetObject(Object object) {
         this.targetObject = object;
