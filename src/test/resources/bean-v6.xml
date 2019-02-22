@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 增加namespace-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop">
+
+    <!-- 扫描哪个包下面的文件 -->
+    <context:component-scan base-package="com.niocoder.service.v6">
+
+    </context:component-scan>
+
+    <!-- 模拟 TransactionManager-->
+    <bean id="tx" class="com.niocoder.tx.TransactionManager"/>
+
+    <!-- aop 配置-->
+    <aop:config>
+        <!-- aop 核心配置 依赖tx-->
+        <aop:aspect ref="tx">
+            <!-- 切入点配置 包下面的placeOrder 方法-->
+            <aop:pointcut id="placeOrder"
+                          expression="execution(* com.niocoder.service.v6.*.placeOrder(..))"/>
+            <!-- 通知配置，-->
+            <aop:before pointcut-ref="placeOrder" method="start"/>
+            <aop:after-returning pointcut-ref="placeOrder" method="commit"/>
+            <aop:after-throwing pointcut-ref="placeOrder" method="rollback"/>
+        </aop:aspect>
+
+    </aop:config>
+</beans>

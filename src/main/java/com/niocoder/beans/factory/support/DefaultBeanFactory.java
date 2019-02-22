@@ -1,15 +1,20 @@
 package com.niocoder.beans.factory.support;
 
 import com.niocoder.beans.BeanDefinition;
+import com.niocoder.beans.BeansException;
 import com.niocoder.beans.PropertyValue;
 import com.niocoder.beans.SimpleTypeConverter;
 import com.niocoder.beans.factory.BeanCreationException;
+import com.niocoder.beans.factory.BeanFactoryAware;
 import com.niocoder.beans.factory.NoSuchBeanDefinitionException;
 import com.niocoder.beans.factory.config.BeanPostProcessor;
 import com.niocoder.beans.factory.config.ConfigurableBeanFactory;
 import com.niocoder.beans.factory.config.DependencyDescriptor;
 import com.niocoder.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import com.niocoder.util.ClassUtils;
+import jdk.nashorn.internal.runtime.logging.Logger;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 import java.beans.BeanInfo;
 import java.beans.Introspector;
@@ -25,7 +30,9 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author zhenglongfei
  */
-public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements ConfigurableBeanFactory, BeanDefinitionRegistry {
+@Log
+public class DefaultBeanFactory extends AbstractBeanFactory implements
+        BeanDefinitionRegistry {
 
     /**
      * 存放BeanPostProcessor
@@ -77,12 +84,15 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
         return bd.getBeanClass();
     }
 
-    private Object createBean(BeanDefinition bd) {
+    @Override
+    protected Object createBean(BeanDefinition bd) {
 
         // 1. 创建实例
         Object bean = instantiateBean(bd);
         // 2. 设置属性
         populateBean(bd, bean);
+        // 初始化操作
+        bean = initializeBean(bd, bean);
 
         return bean;
     }
@@ -186,5 +196,60 @@ public class DefaultBeanFactory extends DefaultSingletonBeanRegistry implements 
     @Override
     public List<BeanPostProcessor> getBeanPostProcessors() {
         return this.beanPostProcessors;
+    }
+
+    protected Object initializeBean(BeanDefinition bd, Object bean) {
+        invokeAwareMethods(bean);
+        // todo 对Bean做初始化
+        // 创建代理
+        if (!bd.isSynthetic()) {
+            return applyBeanPostProcessorsAfterInitialization(bean, bd.getId());
+        }
+        return bean;
+    }
+
+    private Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName) throws BeansException {
+        Object result = existingBean;
+        for (BeanPostProcessor beanPostProcessor : getBeanPostProcessors()) {
+            result = beanPostProcessor.postProcessAfterInitialization(result, beanName);
+            if (result == null) {
+                return result;
+            }
+        }
+        return result;
+    }
+
+    private void invokeAwareMethods(Object bean) {
+        if (bean instanceof BeanFactoryAware) {
+            ((BeanFactoryAware) bean).setBeanFactory(this);
+        }
+    }
+
+    @Override
+    public List<Object> getBeansByType(Class<?> type) {
+        List<Object> result = new ArrayList<Object>();
+        List<String> beanIDs = this.getBeanIDsByType(type);
+        for (String beanID : beanIDs) {
+            result.add(this.getBean(beanID));
+        }
+        return result;
+    }
+
+    private List<String> getBeanIDsByType(Class<?> type) {
+        List<String> result = new ArrayList<String>();
+        for (String beanName : this.beanDefinitionMap.keySet()) {
+            Class<?> beanClass = null;
+            try {
+                beanClass = this.getType(beanName);
+            } catch (Exception e) {
+                log.warning("can't load class for bean :" + beanName + ", skip it.");
+                continue;
+            }
+
+            if ((beanClass != null) && type.isAssignableFrom(beanClass)) {
+                result.add(beanName);
+            }
+        }
+        return result;
     }
 }
