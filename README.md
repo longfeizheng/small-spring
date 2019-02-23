@@ -17,6 +17,6 @@
 
 8. [Small Spring系列八：aop (一)](http://niocoder.com/2019/02/16/Small-Spring%E7%B3%BB%E5%88%97%E5%85%AB-aop(%E4%B8%80)/)
 
-9. [Small Spring系列九：aop (二)]()
+9. [Small Spring系列九：aop (二)](https://niocoder.com/2019/02/22/Small-Spring%E7%B3%BB%E5%88%97%E4%B9%9D-aop(%E4%BA%8C)/)
 
-10. [Small Spring系列九：aop (三)]()
+10. [Small Spring系列十：aop (三)]()
