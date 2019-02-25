@@ -51,7 +51,7 @@ public class ConfigBeanDefinitionParser {
         List<Element> childElts = element.elements();
         for (Element elt : childElts) {
             String localName = elt.getName();
-            //<aop:aspect ref="tx">
+            //<aop:aspect> 标签下的内容
             if (ASPECT.equals(localName)) {
                 parseAspect(elt, registry);
             }
@@ -74,8 +74,10 @@ public class ConfigBeanDefinitionParser {
                     if (!StringUtils.hasText(aspectName)) {
                         return;
                     }
+                    // aop:aspect ref="tx"
                     beanReferences.add(new RuntimeBeanReference(aspectName));
                 }
+                // aop:before  after 等
                 GenericBeanDefinition advisorDefinition = parseAdvice(
                         aspectName, i, aspectElement, ele, registry, beanDefinitions, beanReferences);
                 beanDefinitions.add(advisorDefinition);
@@ -84,6 +86,7 @@ public class ConfigBeanDefinitionParser {
 
         List<Element> pointcuts = aspectElement.elements(POINTCUT);
         for (Element pointcutElement : pointcuts) {
+            // aop:pointcut
             parsePointcut(pointcutElement, registry);
         }
     }
@@ -198,6 +201,11 @@ public class ConfigBeanDefinitionParser {
         }
     }
 
+    /**
+     * 判断是不是 Advice 标签 <aop:before
+     * @param ele
+     * @return
+     */
     private boolean isAdviceNode(Element ele) {
 
         String name = ele.getName();
